@@ -1,26 +1,23 @@
 package pro.sky.sockswarehouse.model;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.Objects;
 
-public class Sock implements Comparable<Integer>{
+public class Sock implements Comparable<Sock>{
 
     @NotNull
     private Color color;
     @NotNull
     private Size size;
-    @Positive
+    @NotNull
     private int cottonPart;
 
-    @NotNull
     public Sock(Color color, Size size, int cottonPart) {
         setColor(color);
         setSize(size);
         setCottonPart(cottonPart);
     }
 
-    @NotNull
     public Sock() {
 
     }
@@ -46,7 +43,11 @@ public class Sock implements Comparable<Integer>{
     }
 
     public void setCottonPart(int cottonPart) {
-        this.cottonPart = cottonPart;
+        if (cottonPart < 0 || cottonPart > 100) {
+            throw new IllegalArgumentException("Количество хлопка определяется в процентах и не может быть больше 100% и меньше 0");
+        } else {
+            this.cottonPart = cottonPart;
+        }
     }
 
     @Override
@@ -68,10 +69,10 @@ public class Sock implements Comparable<Integer>{
     }
 
     @Override
-    public int compareTo(Integer o) {
-        if (this.cottonPart > o) {
+    public int compareTo(Sock o) {
+        if (this.cottonPart > o.cottonPart) {
             return 1;
-        } else if (this.cottonPart < o) {
+        } else if (this.cottonPart < o.cottonPart) {
             return -1;
         } else return 0;
     }

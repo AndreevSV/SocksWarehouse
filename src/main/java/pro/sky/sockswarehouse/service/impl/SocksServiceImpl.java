@@ -23,8 +23,12 @@ public class SocksServiceImpl implements SocksServise {
 
     @Override
     public Integer getQuantity(Sock sock) {
-        Optional<Integer> quantity = Optional.of(socksRepository.getQuantity(sock));
-        return quantity.orElseThrow(SockNotFoundException::new);
+        Integer quantity = socksRepository.getQuantity(sock);
+        if (quantity != null) {
+            return quantity;
+        } else {
+            throw new SockNotFoundException();
+        }
     }
 
     @Override
@@ -34,8 +38,10 @@ public class SocksServiceImpl implements SocksServise {
 
     @Override
     public Integer getQuantityByCottonPartMin(Sock sock) {
-        Optional<Integer> quantity = Optional.of(socksRepository.getQuantityByCottonPartMin(sock));
-        return quantity.orElseThrow(SockNotFoundException::new);
+        Integer quantity = socksRepository.getQuantityByCottonPartMin(sock);
+        if (quantity != null) {
+            return quantity;
+        } else throw new SockNotFoundException();
     }
 
     @Override
@@ -46,20 +52,16 @@ public class SocksServiceImpl implements SocksServise {
 
     @Override
     public void socksOut(Sock sock, Integer quantity) {
-        try {
+        if (sock != null) {
             socksRepository.socksOut(sock, quantity);
-        } catch (SockNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+        } else throw new SockNotFoundException();
     }
 
     @Override
     public void socksUtilized(Sock sock, Integer quantity) {
-        try {
-        socksRepository.socksUtilized(sock, quantity);
-        } catch (SockNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+        if (sock != null) {
+            socksRepository.socksUtilized(sock, quantity);
+        } else throw new SockNotFoundException();
     }
 
     @Override

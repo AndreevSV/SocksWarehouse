@@ -3,6 +3,7 @@ package pro.sky.sockswarehouse.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pro.sky.sockswarehouse.model.Sock;
+import pro.sky.sockswarehouse.util.SockNotFoundException;
 
 import java.util.*;
 
@@ -26,7 +27,11 @@ public class SocksRepository {
     }
 
     public Integer getQuantity(Sock sock) {
-        return socks.get(sock);
+        if (socks.containsKey(sock)) {
+            return socks.get(sock);
+        } else {
+            throw new SockNotFoundException();
+        }
     }
 
     public Map<Sock, Integer> getAllAvailableSocks () {
@@ -36,7 +41,7 @@ public class SocksRepository {
     public Integer getQuantityByCottonPartMin(Sock sock) {
         int quantity = 0;
         for (Map.Entry<Sock, Integer> entry : socks.entrySet()) {
-            if (entry.getKey().compareTo(sock.getCottonPart()) <= 0) {
+            if (entry.getKey().compareTo(sock) <= 0) {
                 quantity += entry.getValue();
             }
         }
@@ -45,7 +50,7 @@ public class SocksRepository {
     public Integer getQuantityByCottonPartMax(Sock sock) {
         int quantity = 0;
         for (Map.Entry<Sock, Integer> entry : socks.entrySet()) {
-            if (entry.getKey().compareTo(sock.getCottonPart()) >= 0) {
+            if (entry.getKey().compareTo(sock) >= 0) {
                 quantity += entry.getValue();
             }
         }
@@ -57,11 +62,19 @@ public class SocksRepository {
             if (socks.get(sock) >= quantity) {
                 int decreasedQuantity = socks.get(sock) - quantity;
                 socks.put(sock, decreasedQuantity);
-                outSocks.put(sock, quantity);
+                if (outSocks.containsKey(sock)) {
+                    int increasedQuantity = outSocks.get(sock) + quantity;
+                    socks.put(sock, increasedQuantity);
+                } else {
+                    outSocks.put(sock, quantity);
+                }
             } else {
                 socks.put(sock, 0);
-                outSocks.put(sock, 0);
+                int outSocksQuantity = socks.get(sock);
+                outSocks.put(sock, outSocksQuantity);
             }
+        } else {
+            throw new SockNotFoundException();
         }
     }
 
@@ -70,11 +83,19 @@ public class SocksRepository {
             if (socks.get(sock) >= quantity) {
                 int decreasedQuantity = socks.get(sock) - quantity;
                 socks.put(sock, decreasedQuantity);
-                utilizedSocks.put(sock, quantity);
+                if (outSocks.containsKey(sock)) {
+                    int increasedQuantity = outSocks.get(sock) + quantity;
+                    socks.put(sock, increasedQuantity);
+                } else {
+                    utilizedSocks.put(sock, quantity);
+                }
             } else {
                 socks.put(sock, 0);
-                utilizedSocks.put(sock, 0);
+                int outSocksQuantity = socks.get(sock);
+                utilizedSocks.put(sock, outSocksQuantity);
             }
+        } else {
+            throw new SockNotFoundException();
         }
     }
 
