@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import pro.sky.sockswarehouse.model.Color;
 import pro.sky.sockswarehouse.model.Size;
 import pro.sky.sockswarehouse.model.Sock;
-import pro.sky.sockswarehouse.service.impl.SocksServiceImpl;
+import pro.sky.sockswarehouse.service.SocksServise;
 import pro.sky.sockswarehouse.util.SockNotFoundException;
 import pro.sky.sockswarehouse.util.SocksErrorResponse;
 
@@ -30,9 +30,9 @@ import java.util.Map;
                 "выводить остатки, выводить, что списано, выводить, что утилизировано")
 public class SocksWarehouseController {
 
-    private final SocksServiceImpl socksService;
+    private final SocksServise socksService;
 
-    public SocksWarehouseController(SocksServiceImpl socksService) {
+    public SocksWarehouseController(SocksServise socksService) {
         this.socksService = socksService;
     }
 

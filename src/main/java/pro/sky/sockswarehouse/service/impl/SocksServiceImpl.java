@@ -41,7 +41,10 @@ public class SocksServiceImpl implements SocksServise {
         Integer quantity = socksRepository.getQuantityByCottonPartMin(sock);
         if (quantity != null) {
             return quantity;
-        } else throw new SockNotFoundException();
+        } else {
+            throw new SockNotFoundException();
+        }
+
     }
 
     @Override
@@ -54,14 +57,18 @@ public class SocksServiceImpl implements SocksServise {
     public void socksOut(Sock sock, Integer quantity) {
         if (sock != null) {
             socksRepository.socksOut(sock, quantity);
-        } else throw new SockNotFoundException();
+        } else {
+            throw new SockNotFoundException();
+        }
     }
 
     @Override
     public void socksUtilized(Sock sock, Integer quantity) {
         if (sock != null) {
             socksRepository.socksUtilized(sock, quantity);
-        } else throw new SockNotFoundException();
+        } else {
+            throw new SockNotFoundException();
+        }
     }
 
     @Override
